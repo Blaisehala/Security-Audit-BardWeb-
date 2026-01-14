@@ -1,4 +1,7 @@
-**Authentication & Authorization**
+## Security Testing Checklist 
+
+
+**Authentication & Authorization:**
 
  [] Test brute force on login (no lockout?)
 
@@ -15,8 +18,10 @@
  [] Test password reset flow for vulnerabilities
 
  [] Check for account takeover vectors
+ 
+ ______
 
-**Input Validation**
+**Input Validation:**
 
  Test XSS in bio, event descriptions, donation messages
 
@@ -28,8 +33,10 @@
 
  Test excessively long inputs (buffer overflow?)
 
+____
 
-**Authorization (IDOR)**
+
+**Authorization (IDOR):**
 
  [] Can user A view user B's donation history?
 
@@ -39,8 +46,10 @@
 
  [] Can user access admin endpoints without privilege?
 
+ ___
 
-**Payment Security**
+
+**Payment Security:**
 
  [] Test M-Pesa webhook authentication
 
@@ -50,8 +59,10 @@
 
  [] Test double-spending scenarios
 
+ ___
 
-**Data Exposure**
+
+**Data Exposure:**
 
  [] Check DEBUG=False in production
 
@@ -61,7 +72,9 @@
 
  [] Test API responses for information leakage
 
-**Infrastructure**
+ ___
+
+**Infrastructure:**
 
  [] Verify HTTPS is enforced (HSTS header?)
 
