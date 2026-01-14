@@ -323,12 +323,93 @@ ____________
 ## API Endpoints Map
 
 ### Authentication
-- POST /api/register/ - Creates new user
-- POST /api/login/ - Returns JWT token
-[complete this for EVERY endpoint]
+
+#### Registration
+- POST `/register/` - Creates new user
+
+  - Purpose: Creates new user account with member number and secret code verification
+
+  - Authentication: Not required (public)
+
+  - Input: username, email, password1, password2, first_name, last_name, member_number, secret_code, phone_number (optional)
+
+  - Validation:
+
+    - Member number must exist and not be used
+
+    - Secret code must be valid
+
+    - Email must be unique
+
+    - Passwords must match and meet Django's validators
+
+  - Response: Redirects to login on success
+
+  - Security Risks:
+  
+        - Brute force on secret code
+        - Enumeration of valid member numbers
+        - CSRF token required
+
+
+ #### Login 
+
+ - POST /login/ 
+ 
+   - Purpose: Authenticates user with username/password
+
+   - Authentication:Not Required(public)
+
+   - Input: `username`, `password`
+
+    - Response: Session cookie set, redirects to dashboard
+
+    - Security Risks:
+         
+          -Brute force attacks(no rate limiting visible)
+          - Credentials sent over HTTPS(verify in production)
+
+
+ #### Logout  
+
+ - POST `/logout/` 
+ 
+   - Purpose: End user session
+
+   - Authenticatiion: Required
+
+   - Response: Redirects to homepage 
+
+    - Security: Session invalidated
+
+___
+
+
+### Event Endpoints
+### Donation Endpoints
+### Admin Endpoints
+
+
 
 ## Data Flow Example
-"User registers -> receives JWT -> creates task -> task saved with user_id -> user queries their tasks"
+           1. User visits /register/
+           2. User enters: username, email, password, member_number, secret_code
+           3. Django validates:
+               - Member number exists in database
+               - Member number is not already used
+               - Secret code is valid
+               - Email is unique
+               - Passwords match and meet requirements
+           
+           4. If valid:
+               - User object created (is_verified=False initially)
+               - Member number marked as used
+               - User redirected to login
+           5. User logs in
+           6. User makes M-Pesa payment (handled separately)
+           7. Admin verifies payment
+           8. is_verified set to True
+           9. User gains full access to platform
 
 ## Potential Attack Surface (Initial Thoughts)
 - User input points: registration form, login, task creation, search
